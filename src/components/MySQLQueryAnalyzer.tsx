@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -185,7 +184,7 @@ const MySQLQueryAnalyzer = () => {
                 Slow Query Analysis
               </CardTitle>
               <CardDescription className="text-slate-400">
-                Queries with execution time > 1 second, ordered by frequency and impact
+                Queries with execution time &gt; 1 second, ordered by frequency and impact
               </CardDescription>
             </CardHeader>
             <CardContent>
