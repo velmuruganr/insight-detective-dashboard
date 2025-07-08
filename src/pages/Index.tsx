@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -79,12 +78,17 @@ const Index = () => {
                   onChange={handleFileUpload}
                   className="hidden"
                 />
-                <label htmlFor="file-upload">
-                  <Button variant="outline" size="sm" className="border-slate-600 text-slate-300 hover:bg-slate-700 cursor-pointer">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="sm"
+                  className="border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
+                >
+                  <label htmlFor="file-upload" className="cursor-pointer flex items-center">
                     <Upload className="h-4 w-4 mr-2" />
                     Upload Files
-                  </Button>
-                </label>
+                  </label>
+                </Button>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="h-2 w-2 bg-blue-500 rounded-full"></div>
@@ -104,7 +108,7 @@ const Index = () => {
                   variant="outline" 
                   size="sm" 
                   onClick={() => setUploadedFiles([])}
-                  className="border-slate-600 text-slate-300 text-xs"
+                  className="border-slate-600 text-slate-300 text-xs hover:bg-slate-700"
                 >
                   Clear All
                 </Button>
