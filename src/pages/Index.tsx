@@ -10,37 +10,45 @@ import { HeapDumpAnalyzer } from "@/components/HeapDumpAnalyzer";
 import { JBossLogAnalyzer } from "@/components/JBossLogAnalyzer";
 import { MySQLQueryAnalyzer } from "@/components/MySQLQueryAnalyzer";
 import { DashboardOverview } from "@/components/DashboardOverview";
-import { Activity, Database, Server, Zap, Upload, AlertTriangle, TrendingUp } from "lucide-react";
+import { Activity, Database, Server, Zap, Upload, AlertTriangle, TrendingUp, FileText } from "lucide-react";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      setUploadedFiles(prev => [...prev, ...Array.from(files)]);
+    }
+  };
 
   const stats = [
     {
-      title: "Active Threads",
-      value: "247",
-      change: "+12%",
-      icon: Activity,
-      status: "warning"
-    },
-    {
-      title: "Heap Usage",
-      value: "78%",
-      change: "+5%",
-      icon: TrendingUp,
-      status: "danger"
-    },
-    {
-      title: "Error Rate",
-      value: "2.3%",
-      change: "-0.8%",
-      icon: AlertTriangle,
+      title: "Files Uploaded",
+      value: uploadedFiles.length.toString(),
+      change: "Ready for analysis",
+      icon: FileText,
       status: "success"
     },
     {
-      title: "Slow Queries",
-      value: "43",
-      change: "-15%",
+      title: "Thread Dumps",
+      value: "3",
+      change: "Analyzed",
+      icon: Activity,
+      status: "success"
+    },
+    {
+      title: "Heap Dumps",
+      value: "2",
+      change: "Processing",
+      icon: TrendingUp,
+      status: "warning"
+    },
+    {
+      title: "Log Files",
+      value: "5",
+      change: "Parsed",
       icon: Database,
       status: "success"
     }
@@ -58,20 +66,58 @@ const Index = () => {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white">DevOps Analytics Dashboard</h1>
-                <p className="text-slate-400">Performance monitoring and troubleshooting platform</p>
+                <p className="text-slate-400">File-based performance analysis and troubleshooting platform</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm" className="border-slate-600 text-slate-300 hover:bg-slate-700">
-                <Upload className="h-4 w-4 mr-2" />
-                Upload Files
-              </Button>
+              <div className="relative">
+                <input
+                  type="file"
+                  id="file-upload"
+                  multiple
+                  accept=".txt,.log,.dump,.hprof,.sql"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+                <label htmlFor="file-upload">
+                  <Button variant="outline" size="sm" className="border-slate-600 text-slate-300 hover:bg-slate-700 cursor-pointer">
+                    <Upload className="h-4 w-4 mr-2" />
+                    Upload Files
+                  </Button>
+                </label>
+              </div>
               <div className="flex items-center space-x-2">
-                <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm text-slate-400">Live monitoring</span>
+                <div className="h-2 w-2 bg-blue-500 rounded-full"></div>
+                <span className="text-sm text-slate-400">File analysis mode</span>
               </div>
             </div>
           </div>
+          
+          {/* File Upload Status */}
+          {uploadedFiles.length > 0 && (
+            <div className="mt-4 p-3 bg-slate-700/30 rounded-lg">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-slate-300">
+                  {uploadedFiles.length} file(s) uploaded and ready for analysis
+                </span>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => setUploadedFiles([])}
+                  className="border-slate-600 text-slate-300 text-xs"
+                >
+                  Clear All
+                </Button>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {uploadedFiles.map((file, index) => (
+                  <Badge key={index} variant="secondary" className="text-xs">
+                    {file.name}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -110,9 +156,9 @@ const Index = () => {
         {/* Main Dashboard */}
         <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="text-white">System Analysis</CardTitle>
+            <CardTitle className="text-white">File Analysis Dashboard</CardTitle>
             <CardDescription className="text-slate-400">
-              Comprehensive analysis tools for performance monitoring and troubleshooting
+              Upload and analyze thread dumps, heap dumps, server logs, and database queries
             </CardDescription>
           </CardHeader>
           <CardContent>

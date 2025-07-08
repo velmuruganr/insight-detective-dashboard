@@ -30,6 +30,17 @@ const DashboardOverview = () => {
     { component: 'Network', status: 'critical', utilization: 95, issues: 12 },
   ];
 
+  const getBarColor = (severity: string) => {
+    switch (severity) {
+      case 'high':
+        return '#EF4444';
+      case 'medium':
+        return '#F59E0B';
+      default:
+        return '#10B981';
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
       {/* System Performance Chart */}
@@ -40,7 +51,7 @@ const DashboardOverview = () => {
             System Performance Trends
           </CardTitle>
           <CardDescription className="text-slate-400">
-            Real-time monitoring of key system metrics
+            Analysis based on uploaded dump files and logs
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -70,7 +81,7 @@ const DashboardOverview = () => {
         <CardHeader>
           <CardTitle className="text-white flex items-center">
             <HardDrive className="h-5 w-5 mr-2 text-green-400" />
-            System Health
+            Analysis Summary
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -114,7 +125,7 @@ const DashboardOverview = () => {
             Error Pattern Analysis
           </CardTitle>
           <CardDescription className="text-slate-400">
-            Most frequent errors and their impact
+            Most frequent errors from uploaded files
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -133,10 +144,7 @@ const DashboardOverview = () => {
               />
               <Bar 
                 dataKey="count" 
-                fill={(entry) => 
-                  entry.severity === 'high' ? '#EF4444' : 
-                  entry.severity === 'medium' ? '#F59E0B' : '#10B981'
-                }
+                fill="#3B82F6"
               />
             </BarChart>
           </ResponsiveContainer>
@@ -171,7 +179,7 @@ const DashboardOverview = () => {
           <div className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg">
             <div className="flex items-center space-x-3">
               <Network className="h-4 w-4 text-purple-400" />
-              <span className="text-sm text-slate-300">Clear Cache</span>
+              <span className="text-sm text-slate-300">Export Analysis</span>
             </div>
             <Badge variant="outline" className="text-xs">Available</Badge>
           </div>
